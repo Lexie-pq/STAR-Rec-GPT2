@@ -85,6 +85,7 @@ Now, when you run the project, GPT-2 will be used to provide additional scoring 
 
 ### Potential Results:
 
+```
 Final Results:
 
 Results for Beauty dataset:
@@ -96,8 +97,7 @@ hit@5           0.0611
 ndcg@10         0.0477
 ndcg@5          0.0470
 ------------------------------
-
-
+```
 
 ========================================
 ========================================
