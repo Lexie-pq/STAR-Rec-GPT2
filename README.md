@@ -99,9 +99,6 @@ ndcg@5          0.0470
 ------------------------------
 ```
 
-========================================
-========================================
-
 
 Appendix:
 # STAR: A Simple Training-free Approach for Recommendations using Large Language Models
