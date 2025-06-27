@@ -9,7 +9,7 @@ This repository builds upon the **STAR** retrieval pipeline and introduces an en
 ## **Key Contributions**
 
 1. **Retrieval Stage**: Based on the **STAR** framework, this stage combines semantic embeddings and collaborative filtering for the initial ranking of candidate items.
-2. **Ranking Stage**: GPT-2 is used to refine the ranking of candidate items, leveraging its natural language understanding capabilities to adjust the priority of items.
+2. **Ranking Stage**:GPT-2 is used to refine the ranking of candidate items, leveraging its natural language understanding capabilities to adjust the priority of items. The ranking process is separated into two stages: first, candidate items are recalled based on semantic and collaborative filtering, and then the ranking is refined using GPT-2.
 3. This framework effectively enhances recommendation quality by reproducing the core ideas of the **STAR** paper, with the addition of GPT-2 providing a new intelligent layer in the sorting phase.
 
 ---
@@ -92,10 +92,10 @@ Results for Beauty dataset:
 ------------------------------
 Metric          Score     
 ------------------------------
-hit@10          0.0632
-hit@5           0.0611
-ndcg@10         0.0477
-ndcg@5          0.0470
+hit@10          0.3744
+hit@5           0.3493
+ndcg@10         0.2086
+ndcg@5          0.2005
 ------------------------------
 ```
 
@@ -319,10 +319,10 @@ Results for Beauty dataset:
 ------------------------------
 Metric          Score     
 ------------------------------
-hit@10          0.0632
-hit@5           0.0611
-ndcg@10         0.0477
-ndcg@5          0.0470
+hit@10          0.3744
+hit@5           0.3493
+ndcg@10         0.2086
+ndcg@5          0.2005
 ------------------------------
 ```
 
