@@ -3,12 +3,14 @@ import os
 from typing import List, Dict, Set
 import numpy as np
 from pathlib import Path
+#from item_embeddings_huggingface import ItemEmbeddingGenerator
 from item_embeddings_vertex_ai import ItemEmbeddingGenerator
-from star_retrieval import STARRetrieval  # Ensure the modified STARRetrieval is imported
+from star_retrieval import STARRetrieval, STARRetrieval_gpt2
 from collaborative_relationships import CollaborativeRelationshipProcessor
 from evaluation_metrics import RecommendationEvaluator, prepare_evaluation_data, prepare_validation_data, build_user_all_items
 from model_analysis import analyze_semantic_matrix, run_full_analysis
-from utils import load_amazon_dataset, load_amazon_metadata, get_items_from_data, get_training_interactions, print_metrics_table
+from utils import load_amazon_dataset, load_amazon_metadata, get_items_from_data, get_training_interactions, \
+    print_metrics_table, select_top_users_reviews
 from data_quality import DataQualityChecker, verify_item_coverage
 from data_debug import DataDebugger
 from temporal_utils import TemporalProcessor
@@ -17,7 +19,8 @@ from utils import (
     load_amazon_metadata,
     get_items_from_data,
     get_training_interactions,
-    print_metrics_table
+    print_metrics_table,
+    filter_users_by_recent_comments_sorted
 )
 
 def save_embeddings(embeddings, save_dir='data/embeddings'):
@@ -57,6 +60,8 @@ def main():
     
     # Sort reviews chronologically
     reviews = temporal_processor.sort_reviews_chronologically(reviews)
+    #reviews = filter_users_by_recent_comments_sorted(reviews,n=5000,m=1,x=5)
+
     metadata = load_amazon_metadata("beauty", min_interactions=5)
     
     # Initialize debugger
@@ -77,17 +82,27 @@ def main():
     if embeddings is None:
         # follow the A.1 appendix from the STAR paper
         embedding_generator = ItemEmbeddingGenerator()
+        #embedding_generator = ItemEmbeddingGenerator(output_dimension=512, include_fields={'title', 'description', 'category', 'brand', 'price', 'sales_rank'})
         embeddings = embedding_generator.generate_item_embeddings(items)
+        #save_embeddings(embeddings)
         item_to_idx = {item: idx for idx, item in enumerate(sorted(embeddings.keys()))}
-    
+
+    gpt2_model_path = "D:/STAR-main/GPT-2/GPT-2"
     # Initialize retrieval
-    gpt2_model_path = "D:/surf-RAG/GPT-2"  # Set the GPT-2 model path here
-    retrieval = STARRetrieval(
+
+    retrieval = STARRetrieval_gpt2(
         semantic_weight=0.5,
         temporal_decay=0.7,
         history_length=3,
-        gpt2_model_path=gpt2_model_path  # Pass GPT-2 model path
+        gpt2_model_path=gpt2_model_path
     )
+    """
+    retrieval = STARRetrieval(
+        semantic_weight=0.5,
+        temporal_decay=0.7,
+        history_length=3
+    )
+    """
     retrieval.item_to_idx = item_to_idx
     
     # Compute relationships
@@ -135,6 +150,7 @@ def main():
         test_sequences=test_sequences,
         recommender=retrieval,
         k_values=[5, 10],
+        #n_negative_samples=99,
         user_all_items=user_all_items
     )
     
