@@ -25,14 +25,14 @@ To use GPT-2 for ranking optimization, download the necessary files from the [Hu
 * `pytorch_model.bin`
 * `vocab.json`
 
-Save these files in a folder (e.g., `D:/surf-RAG/GPT-2/`).
+Save these files in a folder (e.g., `D:/STAR-main/GPT-2/GPT-2`).
 
 #### 2. **Modify `star_retrieval.py`**:
 
 In `star_retrieval.py`, update the GPT-2 model path:
 
 ```python
-gpt2_model_path = "D:/surf-RAG/GPT-2"  # Set the GPT-2 model path here
+gpt2_model_path = "D:/STAR-main/GPT-2/GPT-2"  # Set the GPT-2 model path here
 retrieval = STARRetrieval(
     semantic_weight=0.5,
     temporal_decay=0.7,
@@ -48,7 +48,7 @@ Ensure the path points to the directory containing the four files you downloaded
 In `main.py`, make sure the GPT-2 model path is set as follows:
 
 ```python
-gpt2_model_path = "D:/surf-RAG/GPT-2"  # Set the GPT-2 model path here
+gpt2_model_path = "D:/STAR-main/GPT-2/GPT-2"  # Set the GPT-2 model path here
 retrieval = STARRetrieval(
     semantic_weight=0.5,
     temporal_decay=0.7,
