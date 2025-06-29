@@ -196,7 +196,7 @@ def get_training_interactions(reviews):
             train_history = group[:-2]
             
             for review in train_history:
-                if review['unixReviewTime'] < test_time:
+                if review['unixReviewTime'] <= test_time:
                     training_interactions.append((
                         review['reviewerID'], 
                         review['asin'],
